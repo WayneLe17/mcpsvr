@@ -10,8 +10,11 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function ServerDetails({ params }: { params: { key: string } }) {
-  const server = allServers.find((s: any) => s.key === params.key);
+export default async function ServerDetails({ params }: { params: { key: string } }) {
+  // Await the params object before accessing its properties
+  const resolvedParams = await params;
+  const key = resolvedParams.key;
+  const server = allServers.find((s: any) => s.key === key);
 
   if (!server) {
     return <div>Server not found</div>;
@@ -24,7 +27,7 @@ export default function ServerDetails({ params }: { params: { key: string } }) {
           <Link href="/" className="text-gray-500 hover:text-gray-700">
             ← Back
           </Link>
-          <h1 className="text-3xl font-bold">{server.name || server.key}</h1>
+          {/* <h1 className="text-3xl font-bold">{server.name || server.key}</h1> */}
         </div>
       </header>
 
