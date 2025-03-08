@@ -3,37 +3,37 @@ import '@fontsource-variable/bricolage-grotesque'
 import './globals.css'
 
 export const metadata: Metadata = {
-    title: 'MCPServer -Discover Exceptional MCP Servers',
-    keywords: 'Open Source, LLM, MCP Servers, Model Context Protocol, MCP',
+    title: 'Renn Labs - Discover Exceptional MCP Servers',
+    keywords: 'Open Source, LLM, MCP Servers, Model Context Protocol, MCP, Renn Labs',
     description:
-        'MCPSvr is a hub for users to discover top MCP servers, unlocking advanced AI capabilities and accelerating innovation.',
+        'Renn Labs is a hub for users to discover top MCP servers, unlocking advanced AI capabilities and accelerating innovation.',
     openGraph: {
-        title: 'MCPServer - Discover Exceptional MCP Servers',
+        title: 'Renn Labs - Discover Exceptional MCP Servers',
         description:
-            'MCPSvr is a hub for users to discover top MCP servers, unlocking advanced AI capabilities and accelerating innovation.',
-        url: `https://mcpsvr.com`,
-        siteName: 'MCPSvr',
+            'Renn Labs is a hub for users to discover top MCP servers, unlocking advanced AI capabilities and accelerating innovation.',
+        url: `https://rennlabs.com`,
+        siteName: 'Renn Labs',
         images: [
             {
-                url: 'https://mcpsvr.com/open-graph.jpg',
+                url: 'https://rennlabs.com/open-graph.jpg',
                 width: 1200,
                 height: 630,
-                alt: 'mcpsvr.com',
+                alt: 'rennlabs.com',
             },
         ],
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'MCPServer -Discover Exceptional MCP Servers',
+        title: 'Renn Labs - Discover Exceptional MCP Servers',
         description:
-            'MCPSvr is a hub for users to discover top MCP servers, unlocking advanced AI capabilities and accelerating innovation.',
-        creator: '@1ronben',
+            'Renn Labs is a hub for users to discover top MCP servers, unlocking advanced AI capabilities and accelerating innovation.',
+        creator: '@rennlabs',
         images: [
             {
-                url: 'https://mcpsvr.com/open-graph.jpg',
+                url: 'https://rennlabs.com/open-graph.jpg',
                 width: 1200,
                 height: 630,
-                alt: 'mcpsvr.com',
+                alt: 'rennlabs.com',
             },
         ],
     },
