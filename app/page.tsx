@@ -4,6 +4,7 @@ import HeroText from '@/components/hero-text'
 import SearchInput from '@/components/search-input'
 import allServers from '@/public/servers.json'
 import {useState, useMemo} from 'react'
+import Link from 'next/link'
 
 export default function Home() {
     const [filter, setFilter] = useState<string[]>([])
@@ -38,11 +39,7 @@ export default function Home() {
                 })
             })
         }
-        return filteredServers.sort((a, b) => {
-            const nameA = a.name || a.key
-            const nameB = b.name || b.key
-            return nameA.localeCompare(nameB)
-        })
+        return filteredServers
     }, [filter])
 
     return (
@@ -54,13 +51,6 @@ export default function Home() {
                     </div>
                     <div className="flex gap-2">
                         <SearchInput onSearch={onSearch} />
-                        <a
-                            href="https://github.com/nanbingxyz/mcpsvr"
-                            target="_blank"
-                            className="bg-stone-800 px-4 py-2 rounded-md text-gray-50"
-                        >
-                            Submit
-                        </a>
                     </div>
                 </div>
                 <div className="text-2xl font-bold">
@@ -82,11 +72,13 @@ export default function Home() {
                     >
                         <div className="text-xl font-medium">
                             <span className="tint-color">●</span>&nbsp;
-                            <span
-                                dangerouslySetInnerHTML={{
-                                    __html: highlightText(s.name || s.key),
-                                }}
-                            />
+                            <Link href={`/server/${s.key}`} className="hover:underline">
+                                <span
+                                    dangerouslySetInnerHTML={{
+                                        __html: highlightText(s.name || s.key),
+                                    }}
+                                />
+                            </Link>
                         </div>
                         <div
                             dangerouslySetInnerHTML={{
