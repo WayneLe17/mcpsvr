@@ -1,6 +1,7 @@
 'use client'
 import Footer from '@/components/footer'
 import HeroText from '@/components/hero-text'
+import ImportToolForm from '@/components/import-tool-form'
 import SearchInput from '@/components/search-input'
 import allServers from '@/public/servers.json'
 import {useState, useMemo, useEffect, useCallback} from 'react'
@@ -92,6 +93,7 @@ export default function Home() {
                     </div>
                     <div className="flex gap-2">
                         <SearchInput onSearch={onSearch} />
+                        <ImportToolForm />
                     </div>
                 </div>
                 <div className="text-2xl font-bold">
