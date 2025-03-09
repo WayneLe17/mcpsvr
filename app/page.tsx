@@ -89,7 +89,9 @@ export default function Home() {
             <header className="mb-10">
                 <div className="flex justify-between items-center">
                     <div className='mr-3'>
-                        <img src="https://placehold.co/48x48/5D3FD3/ffffff?text=RL" width="48" alt="Renn Labs logo" />
+                        <div className="flex items-center justify-center w-12 h-12 bg-primary text-primary-foreground rounded">
+                            <span className="font-bold">RL</span>
+                        </div>
                     </div>
                     <div className="flex gap-2">
                         <SearchInput onSearch={onSearch} />
@@ -114,7 +116,7 @@ export default function Home() {
                     {paginatedServers.map((s) => (
                         <div
                             key={s.key}
-                            className="hover:bg-stone-100 p-4 rounded-lg border border-gray-100 shadow-sm flex flex-col h-full"
+                            className="hover:bg-accent p-4 rounded-lg border border-input bg-card text-card-foreground shadow-sm flex flex-col h-full"
                         >
                             <div className="text-xl font-medium mb-2">
                                 <span className="tint-color">●</span>&nbsp;
@@ -127,7 +129,7 @@ export default function Home() {
                                 </Link>
                             </div>
                             <div
-                                className="flex-grow mb-2 text-sm text-gray-700"
+                                className="flex-grow mb-2 text-sm text-muted-foreground"
                                 dangerouslySetInnerHTML={{
                                     __html: highlightText(s.description || ''),
                                 }}
@@ -143,7 +145,7 @@ export default function Home() {
                         <button
                             onClick={() => goToPage(currentPage - 1)}
                             disabled={currentPage === 1}
-                            className="px-3 py-1 rounded border border-gray-300 disabled:opacity-50"
+                            className="px-3 py-1 rounded border border-input disabled:opacity-50"
                             aria-label="Previous page"
                         >
                             &laquo;
@@ -156,8 +158,8 @@ export default function Home() {
                                     onClick={() => goToPage(page)}
                                     className={`px-3 py-1 rounded ${
                                         currentPage === page
-                                            ? 'bg-blue-500 text-white'
-                                            : 'border border-gray-300'
+                                            ? 'bg-primary text-primary-foreground'
+                                            : 'border border-input'
                                     }`}
                                     aria-label={`Page ${page}`}
                                     aria-current={currentPage === page ? 'page' : undefined}
@@ -170,7 +172,7 @@ export default function Home() {
                         <button
                             onClick={() => goToPage(currentPage + 1)}
                             disabled={currentPage === totalPages}
-                            className="px-3 py-1 rounded border border-gray-300 disabled:opacity-50"
+                            className="px-3 py-1 rounded border border-input disabled:opacity-50"
                             aria-label="Next page"
                         >
                             &raquo;

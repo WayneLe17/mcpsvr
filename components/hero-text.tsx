@@ -5,7 +5,7 @@ import { TextRotate } from "@/components/ui/text-rotate"
 
 export default function HeroText() {
   return (
-    <div className="w-full h-full text-2xl sm:text-3xl md:text-5xl flex flex-row items-center justify-center font-overusedGrotesk bg-white dark:text-muted text-foreground font-light overflow-hidden p-12 sm:p-14 md:p-14">
+    <div className="w-full h-full text-2xl sm:text-3xl md:text-5xl flex flex-row items-center justify-center font-overusedGrotesk bg-background text-foreground font-light overflow-hidden p-12 sm:p-14 md:p-14">
       <LayoutGroup>
         <motion.p className="flex whitespace-pre" layout>
           <motion.span
@@ -23,7 +23,7 @@ export default function HeroText() {
               "Reliable",
               "Innovative",
             ]}
-            mainClassName="text-white px-2 sm:px-2 md:px-3 bg-[#ff5941] overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
+            mainClassName="text-primary-foreground px-2 sm:px-2 md:px-3 bg-primary overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
             staggerFrom={"last"}
             initial={{ y: "100%" }}
             animate={{ y: 0 }}

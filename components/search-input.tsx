@@ -31,6 +31,8 @@ export default function SearchInput(options: {
         return () => debouncedSearch.cancel()
     }, [searchTerm, debouncedSearch])
 
+    console.log('Rendering SearchInput with UI components');
+    
     return (
         <SearchField className="max-w-[400px]">
             <FieldGroup>
