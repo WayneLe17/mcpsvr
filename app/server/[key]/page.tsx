@@ -10,10 +10,13 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function ServerDetails({ params }: { params: { key: string } }) {
+interface PageProps {
+  params: Promise<{ key: string }>;
+}
+
+export default async function Page({ params }: PageProps) {
   // Await the params object before accessing its properties
-  const resolvedParams = await params;
-  const key = resolvedParams.key;
+  const key = (await params).key;
   const server = allServers.find((s: any) => s.key === key);
 
   if (!server) {

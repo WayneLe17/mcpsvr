@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { XIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { FieldError, FieldGroup, Label } from '@/components/ui/field'
+import { FieldError, Label } from '@/components/ui/field'
 import { Input, TextArea, TextField } from '@/components/ui/textfield'
 
 interface ToolFormData {
