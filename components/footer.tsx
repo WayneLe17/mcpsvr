@@ -6,7 +6,9 @@ export default function Footer() {
                 <div className="mt-4 md:order-1 md:mt-0">
                     <div className="flex items-center justify-center gap-3 md:justify-start mb-1">
                         <div className="flex items-center">
-                            <img src="https://placehold.co/28x28/5D3FD3/ffffff?text=RL" alt="Renn Labs logo" width="28" className="-mt-1"/>
+                            <div className="flex items-center justify-center w-7 h-7 bg-primary text-primary-foreground rounded -mt-1">
+                                <span className="text-xs font-bold">RL</span>
+                            </div>
                             <span className="text-small font-medium ml-2">
                                 Renn Labs
                             </span>
@@ -17,7 +19,7 @@ export default function Footer() {
                             <a href="https://5ire.app" target="_blank" className="font-normal">Go with the 5ire MCP Client.</a>
                         </span> */}
                     </div>
-                    <p className="text-center text-tiny text-gray-400 md:text-start">
+                    <p className="text-center text-tiny text-muted-foreground md:text-start">
                         Copyright © 2025 Renn Labs | Powered by Renn Labs
                     </p>
                 </div>

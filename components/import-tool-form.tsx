@@ -1,5 +1,10 @@
 'use client'
 import { useState } from 'react'
+import { XIcon } from 'lucide-react'
+
+import { Button } from '@/components/ui/button'
+import { FieldError, FieldGroup, Label } from '@/components/ui/field'
+import { Input, TextArea, TextField } from '@/components/ui/textfield'
 
 interface ToolFormData {
   name: string
@@ -18,29 +23,32 @@ export default function ImportToolForm() {
     description: '',
     homepage: '',
   })
+  const [keyError, setKeyError] = useState<string | null>(null)
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
+  const updateFormData = (name: string, value: string) => {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }))
+    
+    // Clear error when key is filled
+    if (name === 'key' && value && keyError) {
+      setKeyError(null)
+    }
   }
-
-  // Removed arg handling functions
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Validate required fields
+    if (!formData.key) {
+      setKeyError('Key is required')
+      return
+    }
+    
     setIsSubmitting(true)
     
     try {
-      // Validate required fields
-      if (!formData.key) {
-        alert('Key is required')
-        setIsSubmitting(false)
-        return
-      }
-      
       console.log('Submitting tool:', formData)
       
       // Call the API to add the tool
@@ -77,108 +85,86 @@ export default function ImportToolForm() {
     }
   }
 
+  console.log('Rendering ImportToolForm with UI components');
+  
   return (
     <div>
-      <button
+      <Button
         onClick={() => setIsOpen(!isOpen)}
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+        variant="default"
       >
         {isOpen ? 'Cancel' : 'Import Tool'}
-      </button>
+      </Button>
       
       {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-card p-6 rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto text-card-foreground">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold">Import MCP Tool</h2>
-              <button 
+              <Button
                 onClick={() => setIsOpen(false)}
-                className="text-gray-500 hover:text-gray-700"
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
               >
-                ✕
-              </button>
+                <XIcon className="size-4" />
+              </Button>
             </div>
             
             <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
+                <TextField className="group flex flex-col gap-2">
+                  <Label>Name</Label>
+                  <Input
                     value={formData.name}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    placeholder="Tool Name"
+                    onChange={(e) => updateFormData('name', e.target.value)}
                   />
-                </div>
+                </TextField>
                 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Key <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="key"
+                <TextField className="group flex flex-col gap-2" isInvalid={!!keyError} isRequired>
+                  <Label>Key</Label>
+                  <Input
                     value={formData.key}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    placeholder="ToolKey"
-                    required
+                    onChange={(e) => updateFormData('key', e.target.value)}
                   />
-                </div>
+                  {keyError && <FieldError>{keyError}</FieldError>}
+                </TextField>
                 
-                {/* Command field removed */}
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Homepage
-                  </label>
-                  <input
-                    type="text"
-                    name="homepage"
+                <TextField className="group flex flex-col gap-2">
+                  <Label>Homepage</Label>
+                  <Input
                     value={formData.homepage}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                    placeholder="https://github.com/username/repo"
+                    onChange={(e) => updateFormData('homepage', e.target.value)}
                   />
-                </div>
+                </TextField>
               </div>
               
               <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Description
-                </label>
-                <textarea
-                  name="description"
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  rows={3}
-                  placeholder="Tool description"
-                />
+                <TextField className="group flex flex-col gap-2">
+                  <Label>Description</Label>
+                  <TextArea
+                    value={formData.description}
+                    onChange={(e) => updateFormData('description', e.target.value)}
+                  />
+                </TextField>
               </div>
               
-              {/* Arguments section removed */}
-              
               <div className="flex justify-end gap-2">
-                <button
+                <Button
                   type="button"
                   onClick={() => setIsOpen(false)}
-                  className="px-4 py-2 border border-gray-300 rounded hover:bg-gray-100"
+                  variant="outline"
                   disabled={isSubmitting}
                 >
                   Cancel
-                </button>
-                <button
+                </Button>
+                <Button
                   type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-75"
+                  variant="default"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? 'Importing...' : 'Import Tool'}
-                </button>
+                </Button>
               </div>
             </form>
           </div>
