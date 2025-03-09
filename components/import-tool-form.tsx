@@ -5,10 +5,10 @@ import { XIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { FieldError, Label } from '@/components/ui/field'
 import { Input, TextArea, TextField } from '@/components/ui/textfield'
+import { useToast } from '@/components/ui/toast'
 
 interface ToolFormData {
   name: string
-  key: string
   description: string
   homepage: string
   env?: Record<string, string>
@@ -19,11 +19,11 @@ export default function ImportToolForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState<ToolFormData>({
     name: '',
-    key: '',
     description: '',
     homepage: '',
   })
-  const [keyError, setKeyError] = useState<string | null>(null)
+  const [homepageError, setHomepageError] = useState<string | null>(null)
+  const { showToast, ToastContainer } = useToast()
 
   const updateFormData = (name: string, value: string) => {
     setFormData((prev) => ({
@@ -31,25 +31,64 @@ export default function ImportToolForm() {
       [name]: value,
     }))
     
-    // Clear error when key is filled
-    if (name === 'key' && value && keyError) {
-      setKeyError(null)
+    // Clear error when homepage is filled
+    if (name === 'homepage' && value && homepageError) {
+      setHomepageError(null)
+    }
+  }
+
+  // Function to generate a key from homepage URL
+  const generateKeyFromHomepage = (homepage: string): string | null => {
+    try {
+      const url = new URL(homepage)
+      const pathParts = url.pathname.split('/').filter(Boolean)
+      
+      if (url.hostname === 'github.com' && pathParts.length >= 2) {
+        // For GitHub URLs: username/repo or username/repo/subfolder
+        return pathParts.length > 2
+          ? `${pathParts[1]}-${pathParts.slice(2).join('-')}` // Include subfolder
+          : pathParts[1] // Just repo name
+      } else {
+        // For other URLs, use hostname + first path part if available
+        return pathParts.length > 0
+          ? `${url.hostname}-${pathParts[0]}`
+          : url.hostname
+      }
+    } catch (error) {
+      console.log('Error parsing URL:', error)
+      return null
     }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    // Validate required fields
-    if (!formData.key) {
-      setKeyError('Key is required')
+    // Log the form data to see what we have available
+    console.log('Form data before submission:', formData)
+    
+    // Validate required fields - homepage is now required to generate the key
+    if (!formData.homepage) {
+      setHomepageError('Homepage URL is required to generate a key')
+      return
+    }
+    
+    // Generate key from homepage
+    const generatedKey = generateKeyFromHomepage(formData.homepage)
+    if (!generatedKey) {
+      setHomepageError('Could not generate a key from the provided URL')
       return
     }
     
     setIsSubmitting(true)
     
     try {
-      console.log('Submitting tool:', formData)
+      // Create the complete tool data with the generated key
+      const completeToolData = {
+        ...formData,
+        key: generatedKey
+      }
+      
+      console.log('Submitting tool with auto-generated key:', completeToolData)
       
       // Call the API to add the tool
       const response = await fetch('/api/import-tools', {
@@ -57,29 +96,35 @@ export default function ImportToolForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify([formData]), // API expects an array of tools
+        body: JSON.stringify([completeToolData]), // API expects an array of tools
       })
       
       const data = await response.json()
       
       if (data.success) {
-        alert(`${data.message}\nReloading page to show updated tools...`)
+        // Show success toast
+        showToast(`${data.message}`, 'success')
+        
         // Reset form and close it
         setFormData({
           name: '',
-          key: '',
           description: '',
           homepage: '',
         })
         setIsOpen(false)
-        // Reload the page to show the updated tools
-        window.location.reload()
+        
+        // Reload the page to show the updated tools after a short delay
+        // to allow the user to see the toast notification
+        setTimeout(() => {
+          window.location.reload()
+        }, 1500)
       } else {
-        alert(`Error: ${data.error}`)
+        // Show error toast
+        showToast(`Error: ${data.error}`, 'error')
       }
     } catch (error) {
       console.error('Error submitting tool:', error)
-      alert('Failed to import tool. See console for details.')
+      showToast('Failed to import tool. See console for details.', 'error')
     } finally {
       setIsSubmitting(false)
     }
@@ -89,6 +134,9 @@ export default function ImportToolForm() {
   
   return (
     <div>
+      {/* Toast container for notifications */}
+      <ToastContainer />
+      
       <Button
         onClick={() => setIsOpen(!isOpen)}
         variant="default"
@@ -121,21 +169,17 @@ export default function ImportToolForm() {
                   />
                 </TextField>
                 
-                <TextField className="group flex flex-col gap-2" isInvalid={!!keyError} isRequired>
-                  <Label>Key</Label>
-                  <Input
-                    value={formData.key}
-                    onChange={(e) => updateFormData('key', e.target.value)}
-                  />
-                  {keyError && <FieldError>{keyError}</FieldError>}
-                </TextField>
-                
-                <TextField className="group flex flex-col gap-2">
-                  <Label>Homepage</Label>
+                <TextField className="group flex flex-col gap-2" isInvalid={!!homepageError} isRequired>
+                  <Label>Homepage URL</Label>
                   <Input
                     value={formData.homepage}
                     onChange={(e) => updateFormData('homepage', e.target.value)}
+                    placeholder="https://github.com/username/repo"
                   />
+                  {homepageError && <FieldError>{homepageError}</FieldError>}
+                  <div className="text-xs text-muted-foreground">
+                    The key will be auto-generated from this URL
+                  </div>
                 </TextField>
               </div>
               

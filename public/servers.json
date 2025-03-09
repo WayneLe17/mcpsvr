@@ -303,16 +303,5 @@
             "FIGMA_API_KEY": "{{apiKey@string::Your figma api key}}"
         },
         "homepage": "https://github.com/ai-zerolab/mcp-toolbox"
-    },
-    {
-        "name": "puppeter",
-        "key": "puppeteer",
-        "command": "npx",
-        "description": "Web",
-        "args": [
-            "-y",
-            "@modelcontextprotocol/server-puppeteer"
-        ],
-        "homepage": "https://github.com/modelcontextprotocol/servers/tree/main/src/puppeteer"
     }
 ]

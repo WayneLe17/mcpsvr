@@ -1,11 +1,15 @@
-import allServers from "@/public/servers.json";
+import { getAllServers, getServerByKey } from "@/lib/serverUtils";
 import Footer from "@/components/footer";
 import Link from "next/link";
 import ServerContent from "../../../components/server-content";
 
+// Configure dynamic rendering for this route
+export const dynamic = 'force-dynamic';
+
 // Add this function to generate static paths for all servers
 export async function generateStaticParams() {
-  return allServers.map((server: any) => ({
+  const servers = await getAllServers();
+  return servers.map((server: any) => ({
     key: server.key,
   }));
 }
@@ -17,7 +21,7 @@ interface PageProps {
 export default async function Page({ params }: PageProps) {
   // Await the params object before accessing its properties
   const key = (await params).key;
-  const server = allServers.find((s: any) => s.key === key);
+  const server = await getServerByKey(key);
 
   if (!server) {
     return <div>Server not found</div>;
