@@ -14,10 +14,6 @@ export default function Footer() {
                             </span>
                         </div>
                         <div className="border-r h-3">&nbsp;</div>
-                        {/* <span className="border-none px-0 text-default-500">
-                            <span className="tint-color">●</span>&nbsp;
-                            <a href="https://5ire.app" target="_blank" className="font-normal">Go with the 5ire MCP Client.</a>
-                        </span> */}
                     </div>
                     <p className="text-center text-tiny text-muted-foreground md:text-start">
                         Copyright © 2025 Renn Labs | Powered by Renn Labs

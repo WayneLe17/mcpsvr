@@ -3,30 +3,30 @@ import '@fontsource-variable/bricolage-grotesque'
 import './globals.css'
 
 export const metadata: Metadata = {
-    title: 'Renn Labs - Discover Exceptional MCP Servers',
+    title: 'Discover Exceptional MCP Servers',
     keywords: 'Open Source, LLM, MCP Servers, Model Context Protocol, MCP, Renn Labs',
     description:
-        'Renn Labs is a hub for users to discover top MCP servers, unlocking advanced AI capabilities and accelerating innovation.',
+        'This is a hub for users to discover top MCP servers, unlocking advanced AI capabilities and accelerating innovation.',
     openGraph: {
-        title: 'Renn Labs - Discover Exceptional MCP Servers',
+        title: 'Discover Exceptional MCP Servers',
         description:
-            'Renn Labs is a hub for users to discover top MCP servers, unlocking advanced AI capabilities and accelerating innovation.',
+            'This is a hub for users to discover top MCP servers, unlocking advanced AI capabilities and accelerating innovation.',
         url: `https://rennlabs.com`,
         siteName: 'Renn Labs',
-        images: [
-            {
-                url: 'https://rennlabs.com/open-graph.jpg',
-                width: 1200,
-                height: 630,
-                alt: 'rennlabs.com',
-            },
-        ],
+        // images: [
+        //     {
+        //         url: 'https://rennlabs.com/open-graph.jpg',
+        //         width: 1200,
+        //         height: 630,
+        //         alt: 'rennlabs.com',
+        //     },
+        // ],
     },
     twitter: {
         card: 'summary_large_image',
         title: 'Renn Labs - Discover Exceptional MCP Servers',
         description:
-            'Renn Labs is a hub for users to discover top MCP servers, unlocking advanced AI capabilities and accelerating innovation.',
+            'This is a hub for users to discover top MCP servers, unlocking advanced AI capabilities and accelerating innovation.',
         creator: '@rennlabs',
         images: [
             {
