@@ -113,6 +113,10 @@ export default function ImportToolForm() {
         })
         setIsOpen(false)
         
+        // Store current page in localStorage before reloading
+        const currentPage = new URLSearchParams(window.location.search).get('page') || '1';
+        localStorage.setItem('mcpsvr_current_page', currentPage);
+        
         // Reload the page to show the updated tools after a short delay
         // to allow the user to see the toast notification
         setTimeout(() => {

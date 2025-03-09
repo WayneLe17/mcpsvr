@@ -29,17 +29,46 @@ export default function Home() {
   const itemsPerPage = 8
   const { showToast, ToastContainer } = useToast()
   const { showConfirmDialog, ConfirmDialogContainer } = useConfirmDialog()
+  
+  // Initialize page from URL or localStorage when component mounts
+  useEffect(() => {
+    // First check URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const pageParam = urlParams.get('page');
+    
+    if (pageParam) {
+      const pageNumber = parseInt(pageParam, 10);
+      if (!isNaN(pageNumber) && pageNumber > 0) {
+        console.log('Setting page from URL parameter:', pageNumber);
+        setCurrentPage(pageNumber);
+      }
+    } else {
+      // If not in URL, check localStorage
+      const storedPage = localStorage.getItem('mcpsvr_current_page');
+      if (storedPage) {
+        const pageNumber = parseInt(storedPage, 10);
+        if (!isNaN(pageNumber) && pageNumber > 0) {
+          console.log('Setting page from localStorage:', pageNumber);
+          setCurrentPage(pageNumber);
+          // Clear localStorage after using it
+          localStorage.removeItem('mcpsvr_current_page');
+        }
+      }
+    }
+  }, []);
 
   // Fetch servers from MongoDB when the component mounts
   useEffect(() => {
     async function fetchServers() {
       try {
+        console.log('Fetching servers, current page:', currentPage);
         setLoading(true);
         // Initialize the servers collection if it's empty
         await initializeServersCollection();
         // Get all servers from MongoDB
         const data = await getAllServers();
         setServers(data);
+        console.log('Servers fetched, current page still:', currentPage);
       } catch (error) {
         console.error('Error fetching servers:', error);
       } finally {
@@ -48,7 +77,7 @@ export default function Home() {
     }
 
     fetchServers();
-  }, []);
+  }, [currentPage]);
 
   // Handle server deletion
   const handleDelete = async (key: string) => {
@@ -134,6 +163,15 @@ export default function Home() {
         if (page >= 1 && page <= totalPages) {
             console.log(`Setting current page to ${page}`)
             setCurrentPage(page)
+            
+            // Update URL with the new page number without full page reload
+            const url = new URL(window.location.href);
+            url.searchParams.set('page', page.toString());
+            window.history.pushState({}, '', url.toString());
+            
+            // Store current page in localStorage as a backup
+            localStorage.setItem('mcpsvr_current_page', page.toString());
+            
             // Scroll to top when changing pages
             window.scrollTo({ top: 0, behavior: 'smooth' })
         }
