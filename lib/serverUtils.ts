@@ -15,28 +15,6 @@ export async function initializeServersCollection() {
   try {
     await connectToDatabase();
     
-    // Check if servers collection is empty
-    const count = await ServerModel.countDocuments();
-    
-    if (count === 0) {
-      console.log('Initializing servers collection from JSON file...');
-      
-      // Import servers from the JSON file
-      const serversData = require('../public/servers.json');
-      
-      // Add timestamps to each server
-      const serversWithTimestamps = serversData.map((server: any) => ({
-        ...server,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }));
-      
-      // Insert all servers
-      await ServerModel.insertMany(serversWithTimestamps);
-      console.log(`Initialized ${serversWithTimestamps.length} servers in the database`);
-    } else {
-      console.log(`Database already contains ${count} servers`);
-    }
   } catch (error) {
     console.error('Error initializing servers collection:', error);
     throw error;

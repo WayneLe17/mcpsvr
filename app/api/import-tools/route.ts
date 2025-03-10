@@ -19,37 +19,6 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Analyze each tool for potential key generation
-    const analyzedTools = importedTools.map(tool => {
-      console.log('Analyzing tool:', tool.name || 'unnamed tool');
-      
-      // Check if tool has a homepage that could be used for key generation
-      if (tool.homepage && !tool.key) {
-        console.log('Tool has homepage but no key:', tool.homepage);
-        try {
-          const url = new URL(tool.homepage);
-          const pathParts = url.pathname.split('/').filter(Boolean);
-          
-          // Potential auto-generated key logic
-          let potentialKey = '';
-          if (url.hostname === 'github.com' && pathParts.length >= 2) {
-            potentialKey = pathParts.length > 2
-              ? `${pathParts[1]}-${pathParts.slice(2).join('-')}`
-              : pathParts[1];
-          } else {
-            potentialKey = pathParts.length > 0
-              ? `${url.hostname}-${pathParts[0]}`
-              : url.hostname;
-          }
-          
-          console.log('Could generate key from homepage:', potentialKey);
-        } catch (error) {
-          console.log('Error parsing URL for key generation:', error);
-        }
-      }
-      
-      return tool;
-    });
     
     // Process tools - auto-generate keys if needed
     const processedTools = importedTools.map(tool => {
